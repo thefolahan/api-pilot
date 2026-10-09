@@ -8,6 +8,14 @@
   Your OpenAPI spec as docs, a request client, tests and a mock server, in one native Mac app.
   <br>
   Free and open source. For macOS 14 and later.
+  <br>
+  <a href="../../releases/latest">Download&nbsp;&rsaquo;</a>
+  &nbsp;&nbsp;
+  <a href="#build-from-source">Build from source&nbsp;&rsaquo;</a>
+</p>
+
+<p align="center">
+  <img src="docs/hero.jpg" alt="Specline with the JSONPlaceholder sample open. A POST request to create a post returned 201 Created in 527 ms, marked Matches spec with 2 of 2 tests passing, beside the documentation for the endpoint and its schema.">
 </p>
 
 <br>
@@ -59,6 +67,11 @@ your-api/
 | ⇧⌘R | Run the collection |
 | ⇧⌘M | Start or stop the mock server |
 | ⌘F | Find in a response |
+
+## Install
+
+Download `Specline.dmg` from the [latest release](../../releases/latest) and drag Specline to Applications.
+The build is not notarised, so the first time you open it, right click the app and choose Open.
 
 ## Build from source
 
