@@ -291,7 +291,7 @@ final class WorkspaceStore {
         }
         sessions[key] = session
         selection = key
-        flash("Saved \(draft.name) to .specline/requests/\(id).json")
+        flash("Saved \(draft.name) to .apipilot/requests/\(id).json")
     }
 
     private func write(_ request: SavedRequest) {

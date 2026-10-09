@@ -13,7 +13,7 @@ struct WelcomeView: View {
                 Image(nsImage: NSApp.applicationIconImage)
                     .resizable()
                     .frame(width: 84, height: 84)
-                Text("Specline")
+                Text("API Pilot")
                     .font(.system(size: 34, weight: .bold))
                     .padding(.top, 10)
                 Text("Your OpenAPI spec as docs, a request client, tests and a mock server, in one native app.")
@@ -85,7 +85,7 @@ struct WelcomeView: View {
         .sheet(isPresented: $app.showsOpenURL) {
             VStack(alignment: .leading, spacing: 12) {
                 Text("Open a spec from a URL").font(.headline)
-                Text("Specline keeps a copy so you can work offline, and Reload (⌘R) downloads it again.")
+                Text("API Pilot keeps a copy so you can work offline, and Reload (⌘R) downloads it again.")
                     .font(.callout)
                     .foregroundStyle(.secondary)
                 TextField("https://petstore3.swagger.io/api/v3/openapi.json", text: $address)
@@ -164,7 +164,7 @@ private struct RecentRow: View {
     }
 
     private var title: String {
-        if url.path.contains("/Specline/Sample/") { return "JSONPlaceholder sample" }
+        if url.path.contains("/API Pilot/Sample/") { return "JSONPlaceholder sample" }
         let folder = url.deletingLastPathComponent().lastPathComponent
         return url.deletingPathExtension().lastPathComponent.lowercased().hasPrefix("openapi") || url.deletingPathExtension().lastPathComponent.lowercased().hasPrefix("swagger")
             ? folder : url.lastPathComponent

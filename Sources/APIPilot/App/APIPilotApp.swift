@@ -2,12 +2,12 @@ import AppKit
 import SwiftUI
 
 @main
-struct SpeclineApp: App {
+struct APIPilotApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) private var delegate
     @State private var app = AppModel()
 
     var body: some Scene {
-        Window("Specline", id: "main") {
+        Window("API Pilot", id: "main") {
             RootView()
                 .environment(app)
                 .frame(minWidth: 1000, minHeight: 640)
@@ -85,7 +85,7 @@ struct RootView: View {
                     .id(ObjectIdentifier(workspace))
             } else {
                 WelcomeView()
-                    .navigationTitle("Specline")
+                    .navigationTitle("API Pilot")
             }
         }
         .onAppear {
@@ -103,16 +103,16 @@ struct RootView: View {
 
     private func applyLaunchArguments() {
         let defaults = UserDefaults.standard
-        if defaults.bool(forKey: "SpeclineSample") { app.openSample() }
-        if let path = defaults.string(forKey: "SpeclineOpen") { app.open(URL(fileURLWithPath: path)) }
-        guard let workspace = app.workspace, let id = defaults.string(forKey: "SpeclineSelect") else { return }
+        if defaults.bool(forKey: "APIPilotSample") { app.openSample() }
+        if let path = defaults.string(forKey: "APIPilotOpen") { app.open(URL(fileURLWithPath: path)) }
+        guard let workspace = app.workspace, let id = defaults.string(forKey: "APIPilotSelect") else { return }
         workspace.selection = id == "overview" ? .overview : .operation(id)
-        if defaults.bool(forKey: "SpeclineSend"), let session = workspace.currentSession {
+        if defaults.bool(forKey: "APIPilotSend"), let session = workspace.currentSession {
             workspace.send(session)
         }
     }
 }
 
 extension Notification.Name {
-    static let openFiles = Notification.Name("SpeclineOpenFiles")
+    static let openFiles = Notification.Name("APIPilotOpenFiles")
 }

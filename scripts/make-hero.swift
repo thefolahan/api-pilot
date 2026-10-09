@@ -31,7 +31,7 @@ func draw(_ text: String, size: CGFloat, weight: NSFont.Weight, color: NSColor, 
     string.draw(at: CGPoint(x: (width - bounds.width) / 2, y: y))
 }
 
-draw("Specline", size: 92, weight: .bold, color: .white, y: height - 140, tracking: -3)
+draw("API Pilot", size: 92, weight: .bold, color: .white, y: height - 140, tracking: -3)
 draw("Docs, requests, tests and a mock server, straight from your OpenAPI spec.", size: 30, weight: .regular,
      color: NSColor(white: 1, alpha: 0.68), y: height - 196)
 

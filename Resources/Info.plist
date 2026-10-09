@@ -3,13 +3,13 @@
 <plist version="1.0">
 <dict>
     <key>CFBundleName</key>
-    <string>Specline</string>
+    <string>API Pilot</string>
     <key>CFBundleDisplayName</key>
-    <string>Specline</string>
+    <string>API Pilot</string>
     <key>CFBundleIdentifier</key>
-    <string>com.thefolahan.specline</string>
+    <string>com.thefolahan.apipilot</string>
     <key>CFBundleExecutable</key>
-    <string>Specline</string>
+    <string>APIPilot</string>
     <key>CFBundleIconFile</key>
     <string>AppIcon</string>
     <key>CFBundlePackageType</key>

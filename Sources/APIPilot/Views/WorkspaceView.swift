@@ -127,5 +127,5 @@ struct WorkspaceView: View {
 }
 
 extension Notification.Name {
-    static let showEnvironments = Notification.Name("SpeclineShowEnvironments")
+    static let showEnvironments = Notification.Name("APIPilotShowEnvironments")
 }

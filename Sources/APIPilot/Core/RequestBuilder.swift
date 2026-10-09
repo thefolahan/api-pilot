@@ -31,7 +31,7 @@ enum RequestError: Error, LocalizedError {
 }
 
 enum RequestBuilder {
-    static let userAgent = "Specline/1.0"
+    static let userAgent = "APIPilot/1.0"
 
     static func build(_ draft: RequestDraft, variables: [String: String], accessToken: String? = nil) throws -> ResolvedRequest {
         var unresolved = Set<String>()
@@ -104,7 +104,7 @@ enum RequestBuilder {
             body = Data(pairs.joined(separator: "&").utf8)
             if !hasContentType { headers.append(("Content-Type", "application/x-www-form-urlencoded")) }
         case .multipart:
-            let boundary = "Specline" + UUID().uuidString.replacingOccurrences(of: "-", with: "")
+            let boundary = "APIPilot" + UUID().uuidString.replacingOccurrences(of: "-", with: "")
             var data = Data()
             for field in draft.form where field.enabled && !field.key.isEmpty {
                 data.append(Data("--\(boundary)\r\n".utf8))

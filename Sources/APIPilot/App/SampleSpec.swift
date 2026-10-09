@@ -5,7 +5,7 @@ info:
   title: JSONPlaceholder
   version: "1.0"
   description: |
-    A free fake REST API for testing and prototyping, described as OpenAPI so you can explore Specline.
+    A free fake REST API for testing and prototyping, described as OpenAPI so you can explore API Pilot.
 
     Every request here goes to the live service at jsonplaceholder.typicode.com. Writes are accepted and echoed back, but nothing is stored.
 servers:
@@ -220,7 +220,7 @@ components:
         title:
           type: string
           description: The headline of the post.
-          example: Hello from Specline
+          example: Hello from API Pilot
         body:
           type: string
           description: The full text of the post.

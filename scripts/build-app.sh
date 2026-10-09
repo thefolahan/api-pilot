@@ -2,17 +2,17 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
-APP=build/Specline.app
+APP="build/API Pilot.app"
 ARCHS=(--arch arm64 --arch x86_64)
 
 swift build -c release "${ARCHS[@]}"
-BIN="$(swift build -c release "${ARCHS[@]}" --show-bin-path)/Specline"
+BIN="$(swift build -c release "${ARCHS[@]}" --show-bin-path)/APIPilot"
 
 [ -f Resources/AppIcon.icns ] || scripts/make-icon.sh
 
 rm -rf "$APP"
 mkdir -p "$APP/Contents/MacOS" "$APP/Contents/Resources"
-cp "$BIN" "$APP/Contents/MacOS/Specline"
+cp "$BIN" "$APP/Contents/MacOS/APIPilot"
 cp Resources/Info.plist "$APP/Contents/Info.plist"
 cp Resources/AppIcon.icns "$APP/Contents/Resources/AppIcon.icns"
 
@@ -21,11 +21,11 @@ echo "Built $APP"
 
 if [ "${1:-}" = "--dmg" ]; then
     STAGE=build/dmg
-    rm -rf "$STAGE" build/Specline.dmg
+    rm -rf "$STAGE" build/APIPilot.dmg
     mkdir -p "$STAGE"
     cp -R "$APP" "$STAGE/"
     ln -s /Applications "$STAGE/Applications"
-    hdiutil create -volname Specline -srcfolder "$STAGE" -ov -format UDZO build/Specline.dmg >/dev/null
+    hdiutil create -volname "API Pilot" -srcfolder "$STAGE" -ov -format UDZO build/APIPilot.dmg >/dev/null
     rm -rf "$STAGE"
-    echo "Built build/Specline.dmg"
+    echo "Built build/APIPilot.dmg"
 fi

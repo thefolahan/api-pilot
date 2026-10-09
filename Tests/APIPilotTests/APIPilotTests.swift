@@ -1,6 +1,6 @@
 import Foundation
 import Testing
-@testable import Specline
+@testable import APIPilot
 
 @Suite struct ParsingTests {
     let sample = try! SpecParser.parse(data: Data(SampleSpec.yaml.utf8))
@@ -32,7 +32,7 @@ import Testing
         #expect(draft.url == "{{baseUrl}}/posts")
         #expect(draft.bodyMode == .json)
         let body = try JSONParser.parse(draft.body)
-        #expect(body["title"]?.string == "Hello from Specline")
+        #expect(body["title"]?.string == "Hello from API Pilot")
         #expect(body["id"] == nil)
         #expect(draft.assertions.map(\.source) == [.status, .schema])
         #expect(draft.assertions.first?.expected == "201")
@@ -245,7 +245,7 @@ import Testing
         let (data, response) = try await URLSession.shared.data(from: URL(string: "http://127.0.0.1:\(port)/posts/5")!)
         #expect((response as? HTTPURLResponse)?.statusCode == 200)
         let body = try JSONParser.parse(data)
-        #expect(body["title"]?.string == "Hello from Specline")
+        #expect(body["title"]?.string == "Hello from API Pilot")
         #expect(body["id"]?.plainText == "1")
 
         var post = URLRequest(url: URL(string: "http://127.0.0.1:\(port)/posts")!)
@@ -266,6 +266,6 @@ import Testing
         let html = DocsExporter.html(for: spec)
         #expect(html.contains("<title>JSONPlaceholder API reference</title>"))
         #expect(html.contains("id=\"createpost\""))
-        #expect(html.contains("Hello from Specline"))
+        #expect(html.contains("Hello from API Pilot"))
     }
 }

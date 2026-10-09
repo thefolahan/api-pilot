@@ -44,7 +44,7 @@ enum DocsExporter {
         </head>
         <body>
         <nav>\(nav)</nav>
-        <main>\(body)<footer>Generated with Specline.</footer></main>
+        <main>\(body)<footer>Generated with API Pilot.</footer></main>
         </body>
         </html>
         """

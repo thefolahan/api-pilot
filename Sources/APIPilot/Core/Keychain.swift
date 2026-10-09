@@ -2,7 +2,7 @@ import Foundation
 import Security
 
 enum Keychain {
-    private static let service = "com.thefolahan.specline"
+    private static let service = "com.thefolahan.apipilot"
 
     static func read(_ account: String) -> String? {
         let query: [String: Any] = [
@@ -32,7 +32,7 @@ enum Keychain {
         if status == errSecItemNotFound {
             var insert = query
             insert[kSecValueData as String] = data
-            insert[kSecAttrLabel as String] = "Specline secret"
+            insert[kSecAttrLabel as String] = "API Pilot secret"
             SecItemAdd(insert as CFDictionary, nil)
         }
     }

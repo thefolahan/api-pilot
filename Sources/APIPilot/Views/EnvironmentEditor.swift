@@ -54,7 +54,7 @@ struct EnvironmentEditor: View {
             }
             Divider()
             HStack {
-                Text("Values live in .specline/environments. Secret values are kept in your Keychain and never written to the repository.")
+                Text("Values live in .apipilot/environments. Secret values are kept in your Keychain and never written to the repository.")
                     .font(.caption)
                     .foregroundStyle(.secondary)
                 Spacer()

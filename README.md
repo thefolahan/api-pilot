@@ -1,8 +1,8 @@
 <p align="center">
-  <img src="docs/icon.png" width="128" alt="Specline icon">
+  <img src="docs/icon.png" width="128" alt="API Pilot icon">
 </p>
 
-<h1 align="center">Specline</h1>
+<h1 align="center">API Pilot</h1>
 
 <p align="center">
   Your OpenAPI spec as docs, a request client, tests and a mock server, in one native Mac app.
@@ -15,15 +15,15 @@
 </p>
 
 <p align="center">
-  <img src="docs/hero.jpg" alt="Specline with the JSONPlaceholder sample open. A POST request to create a post returned 201 Created in 527 ms, marked Matches spec with 2 of 2 tests passing, beside the documentation for the endpoint and its schema.">
+  <img src="docs/hero.jpg" alt="API Pilot with the JSONPlaceholder sample open. A POST request to create a post returned 201 Created in 527 ms, marked Matches spec with 2 of 2 tests passing, beside the documentation for the endpoint and its schema.">
 </p>
 
 <br>
 
-## Why Specline
+## Why API Pilot
 
 Swagger UI shows you an API. Postman lets you call it. Most teams keep both open, and the two drift apart.
-Specline starts from the spec and builds everything else from it, so the docs, the requests and the tests always describe the same API.
+API Pilot starts from the spec and builds everything else from it, so the docs, the requests and the tests always describe the same API.
 
 ## What it does
 
@@ -39,7 +39,7 @@ Specline starts from the spec and builds everything else from it, so the docs, t
 
 **Environments.** Variables such as `{{baseUrl}}` and `{{token}}` are filled from the active environment. Environments are created from the servers in the spec, and values marked secret are kept in the Keychain.
 
-**Files you can commit.** Saved requests and environments are plain JSON in a `.specline` folder next to the spec, so they live in git with the code. Secret values never reach those files. Edit the spec in any editor and Specline reloads it as soon as you save.
+**Files you can commit.** Saved requests and environments are plain JSON in a `.apipilot` folder next to the spec, so they live in git with the code. Secret values never reach those files. Edit the spec in any editor and API Pilot reloads it as soon as you save.
 
 **HTML export.** Export a single file API reference with navigation, tables and examples, in light and dark.
 
@@ -48,7 +48,7 @@ Specline starts from the spec and builds everything else from it, so the docs, t
 ```
 your-api/
 ├── openapi.yaml
-└── .specline/
+└── .apipilot/
     ├── environments/
     │   └── production.json
     └── requests/
@@ -70,18 +70,18 @@ your-api/
 
 ## Install
 
-Download `Specline.dmg` from the [latest release](../../releases/latest) and drag Specline to Applications.
+Download `APIPilot.dmg` from the [latest release](../../releases/latest) and drag API Pilot to Applications.
 The build is not notarised, so the first time you open it, right click the app and choose Open.
 
 ## Build from source
 
-Specline is a Swift package with no Xcode project. You need Xcode 16 or later.
+API Pilot is a Swift package with no Xcode project. You need Xcode 16 or later.
 
 ```sh
-swift run Specline                # run a debug build
+swift run APIPilot                # run a debug build
 swift test                        # run the tests
-scripts/build-app.sh              # build build/Specline.app
-scripts/build-app.sh --dmg        # also build build/Specline.dmg
+scripts/build-app.sh              # build build/API Pilot.app
+scripts/build-app.sh --dmg        # also build build/APIPilot.dmg
 ```
 
 The build is signed ad hoc. Set `SIGN_IDENTITY` to sign with your own certificate.

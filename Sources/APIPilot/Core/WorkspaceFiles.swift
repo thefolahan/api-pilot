@@ -17,7 +17,7 @@ struct WorkspaceFiles {
     let specURL: URL
 
     var root: URL { specURL.deletingLastPathComponent() }
-    var dataFolder: URL { root.appendingPathComponent(".specline", isDirectory: true) }
+    var dataFolder: URL { root.appendingPathComponent(".apipilot", isDirectory: true) }
     var environmentsFolder: URL { dataFolder.appendingPathComponent("environments", isDirectory: true) }
     var requestsFolder: URL { dataFolder.appendingPathComponent("requests", isDirectory: true) }
     var configURL: URL { dataFolder.appendingPathComponent("workspace.json") }
@@ -37,7 +37,7 @@ struct WorkspaceFiles {
 
     static var supportFolder: URL {
         let folder = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
-            .appendingPathComponent("Specline", isDirectory: true)
+            .appendingPathComponent("API Pilot", isDirectory: true)
         try? FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
         return folder
     }

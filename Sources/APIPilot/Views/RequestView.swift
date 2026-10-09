@@ -17,7 +17,7 @@ struct RequestView: View {
             }
         }
         .sheet(isPresented: Binding(get: { savingName != nil }, set: { if !$0 { savingName = nil } })) {
-            NameSheet(title: "Save request", prompt: "Saved requests live in .specline/requests so you can commit them with your code.",
+            NameSheet(title: "Save request", prompt: "Saved requests live in .apipilot/requests so you can commit them with your code.",
                       name: savingName ?? "", action: "Save") { name in
                 store.save(session, as: name)
             }
@@ -298,7 +298,7 @@ private struct AuthTab: View {
                     TextField("Client ID", text: $auth.clientID)
                     TextField("Client secret", text: $auth.clientSecret)
                     TextField("Scope", text: $auth.scope)
-                    Text("Specline fetches a token with the client credentials grant before sending, and reuses it until it expires.")
+                    Text("API Pilot fetches a token with the client credentials grant before sending, and reuses it until it expires.")
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 }

@@ -13,7 +13,7 @@ struct MockLogEntry: Identifiable {
 
 final class MockServer {
     private var listener: NWListener?
-    private let queue = DispatchQueue(label: "com.thefolahan.specline.mock")
+    private let queue = DispatchQueue(label: "com.thefolahan.apipilot.mock")
     private var spec: APISpec
     private var routes: [(operation: APIOperation, regex: NSRegularExpression)] = []
     private var basePaths: [String] = []
@@ -172,7 +172,7 @@ final class MockServer {
             ("Access-Control-Allow-Origin", "*"),
             ("Access-Control-Allow-Headers", "*"),
             ("Access-Control-Allow-Methods", "GET, POST, PUT, PATCH, DELETE, OPTIONS, HEAD"),
-            ("X-Powered-By", "Specline mock")
+            ("X-Powered-By", "API Pilot mock")
         ]
         lines += all.map { "\($0.0): \($0.1)" }
         var data = Data((lines.joined(separator: "\r\n") + "\r\n\r\n").utf8)

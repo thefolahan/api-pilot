@@ -2,21 +2,21 @@
 import PackageDescription
 
 let package = Package(
-    name: "Specline",
+    name: "APIPilot",
     platforms: [.macOS(.v14)],
     dependencies: [
         .package(url: "https://github.com/jpsim/Yams.git", from: "5.1.0")
     ],
     targets: [
         .executableTarget(
-            name: "Specline",
+            name: "APIPilot",
             dependencies: ["Yams"],
-            path: "Sources/Specline"
+            path: "Sources/APIPilot"
         ),
         .testTarget(
-            name: "SpeclineTests",
-            dependencies: ["Specline"],
-            path: "Tests/SpeclineTests"
+            name: "APIPilotTests",
+            dependencies: ["APIPilot"],
+            path: "Tests/APIPilotTests"
         )
     ]
 )
