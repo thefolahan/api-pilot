@@ -6,10 +6,12 @@ let package = Package(
     platforms: [.macOS(.v14)],
     products: [
         .library(name: "APIPilotKit", targets: ["APIPilotKit"]),
-        .executable(name: "APIPilot", targets: ["APIPilot"])
+        .executable(name: "apipilot", targets: ["apipilot"]),
+        .executable(name: "APIPilotApp", targets: ["APIPilotApp"])
     ],
     dependencies: [
-        .package(url: "https://github.com/jpsim/Yams.git", from: "5.1.0")
+        .package(url: "https://github.com/jpsim/Yams.git", from: "5.1.0"),
+        .package(url: "https://github.com/apple/swift-argument-parser.git", from: "1.5.0")
     ],
     targets: [
         .target(
@@ -18,13 +20,18 @@ let package = Package(
             path: "Sources/APIPilotKit"
         ),
         .executableTarget(
-            name: "APIPilot",
+            name: "apipilot",
+            dependencies: ["APIPilotKit", .product(name: "ArgumentParser", package: "swift-argument-parser")],
+            path: "Sources/APIPilotCLI"
+        ),
+        .executableTarget(
+            name: "APIPilotApp",
             dependencies: ["APIPilotKit"],
-            path: "Sources/APIPilot"
+            path: "Sources/APIPilotApp"
         ),
         .testTarget(
             name: "APIPilotTests",
-            dependencies: ["APIPilot", "APIPilotKit"],
+            dependencies: ["APIPilotApp", "APIPilotKit"],
             path: "Tests/APIPilotTests"
         )
     ]

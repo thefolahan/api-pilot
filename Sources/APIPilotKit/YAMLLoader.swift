@@ -8,7 +8,13 @@ public enum SpecLoader {
         if trimmed.first == "{" || trimmed.first == "[" {
             return try JSONParser.parse(data)
         }
-        guard let node = try Yams.compose(yaml: text) else {
+        let composed: Node?
+        do {
+            composed = try Yams.compose(yaml: text)
+        } catch {
+            throw SpecError.invalid("The YAML is not valid. \(error)")
+        }
+        guard let node = composed else {
             throw SpecError.invalid("The file is empty.")
         }
         return convert(node)

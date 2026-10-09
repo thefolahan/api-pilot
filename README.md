@@ -78,13 +78,32 @@ The build is not notarised, so the first time you open it, right click the app a
 API Pilot is a Swift package with no Xcode project. You need Xcode 16 or later.
 
 ```sh
-swift run APIPilot                # run a debug build
+swift run APIPilotApp             # run a debug build
 swift test                        # run the tests
 scripts/build-app.sh              # build build/API Pilot.app
 scripts/build-app.sh --dmg        # also build build/APIPilot.dmg
 ```
 
 The build is signed ad hoc. Set `SIGN_IDENTITY` to sign with your own certificate.
+
+## Command line
+
+`apipilot` does the same work without the window, for CI, scripts and editor extensions. It reads the same `.apipilot` folder as the app.
+
+```sh
+swift build -c release --product apipilot
+cp .build/release/apipilot /usr/local/bin/
+```
+
+```sh
+apipilot validate openapi.yaml               # broken $refs, duplicate operation IDs, undeclared path parameters
+apipilot run . --env staging                 # send every saved request and check its assertions
+apipilot run . --var baseUrl=http://localhost:3000 --var token=$API_TOKEN
+apipilot mock . --port 4010                  # serve the spec with its examples
+apipilot docs . -o reference.html            # export the HTML reference
+```
+
+The spec argument is a file, or a folder with an `openapi` or `swagger` file in it. `validate` and `run` take `--json` for machine-readable output and exit with 1 when something fails, so a CI step fails with them. Secret variables come from the Keychain when it has them; in CI, pass them with `--var`.
 
 ## Use as a library
 

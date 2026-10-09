@@ -1,6 +1,6 @@
 import Foundation
 import Testing
-@testable import APIPilot
+@testable import APIPilotApp
 @testable import APIPilotKit
 
 @Suite struct ParsingTests {
@@ -268,5 +268,48 @@ import Testing
         #expect(html.contains("<title>JSONPlaceholder API reference</title>"))
         #expect(html.contains("id=\"createpost\""))
         #expect(html.contains("Hello from API Pilot"))
+    }
+}
+
+@Suite struct LinterTests {
+    @Test func sampleHasNoProblems() throws {
+        let spec = try SpecParser.parse(data: Data(SampleSpec.yaml.utf8))
+        #expect(SpecLinter.problems(in: spec).isEmpty)
+    }
+
+    @Test func findsBrokenSpecs() throws {
+        let yaml = """
+        openapi: 3.1.0
+        info: { title: Broken, version: "1" }
+        paths:
+          /pets/{id}:
+            get:
+              operationId: getPet
+              responses:
+                "200":
+                  description: A pet
+                  content:
+                    application/json:
+                      schema: { $ref: "#/components/schemas/Missing" }
+          /owners:
+            get:
+              operationId: getPet
+              responses:
+                "200":
+                  description: Owners
+                  content:
+                    application/json:
+                      schema: { $ref: "./owner.yaml" }
+          /health:
+            get: {}
+        """
+        let problems = SpecLinter.problems(in: try SpecParser.parse(data: Data(yaml.utf8)))
+        let errors = problems.filter { $0.severity == .error }.map(\.message)
+        let warnings = problems.filter { $0.severity == .warning }
+        #expect(errors.contains { $0.contains("#/components/schemas/Missing") })
+        #expect(errors.contains { $0.contains("\"getPet\" is also used by GET /pets/{id}") })
+        #expect(errors.contains { $0.contains("path parameter \"id\"") })
+        #expect(warnings.contains { $0.location == "GET /health" })
+        #expect(warnings.contains { $0.message.contains("./owner.yaml") })
     }
 }

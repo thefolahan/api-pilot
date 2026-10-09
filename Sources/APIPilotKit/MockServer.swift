@@ -54,13 +54,18 @@ public final class MockServer {
         listener.stateUpdateHandler = { [weak self] state in
             switch state {
             case .ready: self?.onStateChange?(true, nil)
-            case .failed(let error): self?.onStateChange?(false, error.localizedDescription)
+            case .failed(let error): self?.onStateChange?(false, Self.describe(error))
             case .cancelled: self?.onStateChange?(false, nil)
             default: break
             }
         }
         listener.start(queue: queue)
         self.listener = listener
+    }
+
+    private static func describe(_ error: NWError) -> String {
+        if case .posix(let code) = error { return String(cString: strerror(code.rawValue)) + "." }
+        return error.localizedDescription
     }
 
     public func stop() {

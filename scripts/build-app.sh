@@ -6,7 +6,7 @@ APP="build/API Pilot.app"
 ARCHS=(--arch arm64 --arch x86_64)
 
 swift build -c release "${ARCHS[@]}"
-BIN="$(swift build -c release "${ARCHS[@]}" --show-bin-path)/APIPilot"
+BIN="$(swift build -c release "${ARCHS[@]}" --show-bin-path)/APIPilotApp"
 
 [ -f Resources/AppIcon.icns ] || scripts/make-icon.sh
 
