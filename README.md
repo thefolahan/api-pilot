@@ -91,8 +91,7 @@ The build is signed ad hoc. Set `SIGN_IDENTITY` to sign with your own certificat
 `apipilot` does the same work without the window, for CI, scripts and editor extensions. It reads the same `.apipilot` folder as the app.
 
 ```sh
-swift build -c release --product apipilot
-cp .build/release/apipilot /usr/local/bin/
+brew install thefolahan/apipilot/apipilot
 ```
 
 ```sh
