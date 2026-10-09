@@ -1,4 +1,5 @@
 import SwiftUI
+import APIPilotKit
 
 struct KeyValueEditor: View {
     @Binding var rows: [KeyValue]

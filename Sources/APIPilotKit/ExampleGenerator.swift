@@ -1,11 +1,11 @@
 import Foundation
 
-enum ExampleGenerator {
-    enum Purpose {
+public enum ExampleGenerator {
+    public enum Purpose {
         case request, response
     }
 
-    static func example(for schema: Schema, purpose: Purpose, depth: Int = 0) -> JSONValue {
+    public static func example(for schema: Schema, purpose: Purpose, depth: Int = 0) -> JSONValue {
         if let example = schema.example { return example }
         if let value = schema.defaultValue { return value }
         if let first = schema.enumValues.first { return first }
@@ -40,7 +40,7 @@ enum ExampleGenerator {
         }
     }
 
-    static func sampleString(format: String?) -> String {
+    public static func sampleString(format: String?) -> String {
         switch format {
         case "date-time": return "2026-01-15T09:30:00Z"
         case "date": return "2026-01-15"
@@ -57,7 +57,7 @@ enum ExampleGenerator {
         }
     }
 
-    static func example(for media: APIMediaType, document: SpecDocument, purpose: Purpose) -> JSONValue? {
+    public static func example(for media: APIMediaType, document: SpecDocument, purpose: Purpose) -> JSONValue? {
         if let example = media.example { return example }
         guard let schema = media.schema else { return nil }
         return example(for: Schema(schema, document: document), purpose: purpose)

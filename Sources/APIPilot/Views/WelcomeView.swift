@@ -1,4 +1,5 @@
 import SwiftUI
+import APIPilotKit
 
 struct WelcomeView: View {
     @Environment(AppModel.self) private var app

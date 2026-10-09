@@ -1,4 +1,5 @@
 import SwiftUI
+import APIPilotKit
 
 struct SchemaTreeView: View {
     let schema: Schema

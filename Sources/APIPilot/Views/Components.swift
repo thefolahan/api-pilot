@@ -1,4 +1,5 @@
 import SwiftUI
+import APIPilotKit
 
 enum Palette {
     static func method(_ method: String) -> Color {

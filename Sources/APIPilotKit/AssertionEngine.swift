@@ -1,15 +1,15 @@
 import Foundation
 
-struct AssertionResult: Identifiable {
-    let id = UUID()
-    let assertion: Assertion
-    let passed: Bool
-    let actual: String
-    let issues: [ValidationIssue]
+public struct AssertionResult: Identifiable {
+    public let id = UUID()
+    public let assertion: Assertion
+    public let passed: Bool
+    public let actual: String
+    public let issues: [ValidationIssue]
 }
 
-enum AssertionEngine {
-    static func evaluate(_ assertions: [Assertion], result: HTTPResult, operation: APIOperation?, spec: APISpec?) -> [AssertionResult] {
+public enum AssertionEngine {
+    public static func evaluate(_ assertions: [Assertion], result: HTTPResult, operation: APIOperation?, spec: APISpec?) -> [AssertionResult] {
         let json = result.json
         return assertions.filter(\.enabled).map { assertion in
             switch assertion.source {
@@ -29,7 +29,7 @@ enum AssertionEngine {
         }
     }
 
-    static func schemaIssues(result: HTTPResult, operation: APIOperation?, spec: APISpec?) -> (checked: Bool, issues: [ValidationIssue], note: String) {
+    public static func schemaIssues(result: HTTPResult, operation: APIOperation?, spec: APISpec?) -> (checked: Bool, issues: [ValidationIssue], note: String) {
         guard let operation, let spec else { return (false, [], "This request is not linked to an operation in the spec.") }
         guard let response = operation.response(for: result.status) else {
             return (true, [ValidationIssue(path: "status", message: "\(result.status) is not a documented response")], "")
@@ -76,7 +76,7 @@ enum AssertionEngine {
         return AssertionResult(assertion: assertion, passed: passed, actual: shown, issues: [])
     }
 
-    static func captures(_ captures: [Capture], result: HTTPResult) -> [String: String] {
+    public static func captures(_ captures: [Capture], result: HTTPResult) -> [String: String] {
         let json = result.json
         var values: [String: String] = [:]
         for capture in captures where capture.enabled && !capture.variable.isEmpty {

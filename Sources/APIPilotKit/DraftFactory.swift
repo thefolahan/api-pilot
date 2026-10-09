@@ -1,7 +1,7 @@
 import Foundation
 
-enum DraftFactory {
-    static func make(from operation: APIOperation, spec: APISpec) -> RequestDraft {
+public enum DraftFactory {
+    public static func make(from operation: APIOperation, spec: APISpec) -> RequestDraft {
         let document = spec.document
         var draft = RequestDraft()
         draft.name = operation.title
@@ -61,7 +61,7 @@ enum DraftFactory {
         return draft
     }
 
-    static func auth(for scheme: SecurityScheme) -> AuthConfig {
+    public static func auth(for scheme: SecurityScheme) -> AuthConfig {
         var auth = AuthConfig()
         switch scheme.kind {
         case .http where scheme.scheme == "basic":
@@ -86,7 +86,7 @@ enum DraftFactory {
         return auth
     }
 
-    static func secretNames(for spec: APISpec) -> [String] {
+    public static func secretNames(for spec: APISpec) -> [String] {
         var names: [String] = []
         for scheme in spec.securitySchemes {
             let auth = auth(for: scheme)

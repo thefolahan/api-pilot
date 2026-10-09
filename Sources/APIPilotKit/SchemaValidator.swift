@@ -1,13 +1,18 @@
 import Foundation
 
-struct ValidationIssue: Identifiable, Equatable {
-    let id = UUID()
-    let path: String
-    let message: String
+public struct ValidationIssue: Identifiable, Equatable {
+    public let id = UUID()
+    public let path: String
+    public let message: String
+
+    public init(path: String, message: String) {
+        self.path = path
+        self.message = message
+    }
 }
 
-enum SchemaValidator {
-    static func validate(_ value: JSONValue, against schema: Schema) -> [ValidationIssue] {
+public enum SchemaValidator {
+    public static func validate(_ value: JSONValue, against schema: Schema) -> [ValidationIssue] {
         var issues: [ValidationIssue] = []
         walk(value, schema, path: "$", depth: 0, issues: &issues)
         return issues

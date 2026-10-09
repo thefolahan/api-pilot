@@ -1,6 +1,7 @@
 import Foundation
 import Testing
 @testable import APIPilot
+@testable import APIPilotKit
 
 @Suite struct ParsingTests {
     let sample = try! SpecParser.parse(data: Data(SampleSpec.yaml.utf8))

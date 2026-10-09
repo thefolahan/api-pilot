@@ -1,23 +1,23 @@
 import Foundation
 
-struct EnvironmentVariable: Codable, Identifiable, Equatable {
-    var id = UUID()
-    var enabled = true
-    var key = ""
-    var value = ""
-    var secret = false
+public struct EnvironmentVariable: Codable, Identifiable, Equatable {
+    public var id = UUID()
+    public var enabled = true
+    public var key = ""
+    public var value = ""
+    public var secret = false
 
     enum CodingKeys: String, CodingKey {
         case enabled, key, value, secret
     }
 
-    init(key: String = "", value: String = "", secret: Bool = false) {
+    public init(key: String = "", value: String = "", secret: Bool = false) {
         self.key = key
         self.value = value
         self.secret = secret
     }
 
-    init(from decoder: Decoder) throws {
+    public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         enabled = container.value(.enabled, or: true)
         key = container.value(.key, or: "")
@@ -26,29 +26,29 @@ struct EnvironmentVariable: Codable, Identifiable, Equatable {
     }
 }
 
-struct APIEnvironment: Codable, Identifiable, Equatable {
-    var id: String
-    var name: String
-    var variables: [EnvironmentVariable]
+public struct APIEnvironment: Codable, Identifiable, Equatable {
+    public var id: String
+    public var name: String
+    public var variables: [EnvironmentVariable]
 
     enum CodingKeys: String, CodingKey {
         case name, variables
     }
 
-    init(id: String, name: String, variables: [EnvironmentVariable]) {
+    public init(id: String, name: String, variables: [EnvironmentVariable]) {
         self.id = id
         self.name = name
         self.variables = variables
     }
 
-    init(from decoder: Decoder) throws {
+    public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         id = ""
         name = container.value(.name, or: "Untitled")
         variables = container.value(.variables, or: [])
     }
 
-    var values: [String: String] {
+    public var values: [String: String] {
         var result: [String: String] = [:]
         for variable in variables where variable.enabled && !variable.key.isEmpty {
             result[variable.key] = variable.value
@@ -56,7 +56,7 @@ struct APIEnvironment: Codable, Identifiable, Equatable {
         return result
     }
 
-    mutating func set(_ key: String, to value: String) {
+    public mutating func set(_ key: String, to value: String) {
         if let index = variables.firstIndex(where: { $0.key == key }) {
             variables[index].value = value
             variables[index].enabled = true
@@ -66,17 +66,17 @@ struct APIEnvironment: Codable, Identifiable, Equatable {
     }
 }
 
-enum Interpolator {
+public enum Interpolator {
     private static let pattern = try! NSRegularExpression(pattern: #"\{\{\s*([^{}]+?)\s*\}\}"#)
 
-    static func references(in text: String) -> [String] {
+    public static func references(in text: String) -> [String] {
         let range = NSRange(text.startIndex..., in: text)
         return pattern.matches(in: text, range: range).compactMap { match in
             Range(match.range(at: 1), in: text).map { String(text[$0]) }
         }
     }
 
-    static func apply(_ text: String, variables: [String: String], unresolved: inout Set<String>) -> String {
+    public static func apply(_ text: String, variables: [String: String], unresolved: inout Set<String>) -> String {
         guard text.contains("{{") else { return text }
         var result = text
         var passes = 0
@@ -100,7 +100,7 @@ enum Interpolator {
         return result
     }
 
-    static func apply(_ text: String, variables: [String: String]) -> String {
+    public static func apply(_ text: String, variables: [String: String]) -> String {
         var ignored = Set<String>()
         return apply(text, variables: variables, unresolved: &ignored)
     }

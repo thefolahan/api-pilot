@@ -1,5 +1,6 @@
 import Foundation
 import Observation
+import APIPilotKit
 
 enum SidebarSelection: Hashable {
     case overview

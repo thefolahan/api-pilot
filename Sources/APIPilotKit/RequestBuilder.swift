@@ -1,25 +1,33 @@
 import Foundation
 
-struct ResolvedRequest {
-    var method: String
-    var url: URL
-    var headers: [(name: String, value: String)]
-    var body: Data?
-    var unresolved: [String]
+public struct ResolvedRequest {
+    public var method: String
+    public var url: URL
+    public var headers: [(name: String, value: String)]
+    public var body: Data?
+    public var unresolved: [String]
 
-    func header(_ name: String) -> String? {
+    public init(method: String, url: URL, headers: [(name: String, value: String)], body: Data? = nil, unresolved: [String] = []) {
+        self.method = method
+        self.url = url
+        self.headers = headers
+        self.body = body
+        self.unresolved = unresolved
+    }
+
+    public func header(_ name: String) -> String? {
         headers.last { $0.name.caseInsensitiveCompare(name) == .orderedSame }?.value
     }
 
-    var bodyText: String? {
+    public var bodyText: String? {
         body.flatMap { String(data: $0, encoding: .utf8) }
     }
 }
 
-enum RequestError: Error, LocalizedError {
+public enum RequestError: Error, LocalizedError {
     case invalidURL(String)
 
-    var errorDescription: String? {
+    public var errorDescription: String? {
         switch self {
         case .invalidURL(let url):
             if url.contains("{{") {
@@ -30,10 +38,10 @@ enum RequestError: Error, LocalizedError {
     }
 }
 
-enum RequestBuilder {
-    static let userAgent = "APIPilot/1.0"
+public enum RequestBuilder {
+    public static let userAgent = "APIPilot/1.0"
 
-    static func build(_ draft: RequestDraft, variables: [String: String], accessToken: String? = nil) throws -> ResolvedRequest {
+    public static func build(_ draft: RequestDraft, variables: [String: String], accessToken: String? = nil) throws -> ResolvedRequest {
         var unresolved = Set<String>()
         let resolve: (String) -> String = { Interpolator.apply($0, variables: variables, unresolved: &unresolved) }
 

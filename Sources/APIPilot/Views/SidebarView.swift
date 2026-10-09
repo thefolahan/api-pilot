@@ -1,4 +1,5 @@
 import SwiftUI
+import APIPilotKit
 
 enum SidebarMode: String, CaseIterable, Identifiable {
     case endpoints, saved, history

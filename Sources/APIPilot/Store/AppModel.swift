@@ -1,6 +1,7 @@
 import AppKit
 import UniformTypeIdentifiers
 import Observation
+import APIPilotKit
 
 @Observable
 @MainActor

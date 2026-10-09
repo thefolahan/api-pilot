@@ -1,4 +1,5 @@
 import SwiftUI
+import APIPilotKit
 
 struct EnvironmentEditor: View {
     @Environment(WorkspaceStore.self) private var store
@@ -157,7 +158,7 @@ struct EnvironmentEditor: View {
         guard let working, let original = store.environments.first(where: { $0.id == working.id }), original != working else { return }
         for variable in original.variables where variable.secret {
             if !working.variables.contains(where: { $0.secret && $0.key == variable.key }) {
-                Keychain.delete(store.files.secretAccount(environment: original.id, key: variable.key))
+                store.files.deleteSecret(environment: original.id, key: variable.key)
             }
         }
         var cleaned = working

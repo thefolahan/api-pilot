@@ -1,13 +1,13 @@
 import Foundation
 
-final class SpecDocument {
-    let root: JSONValue
+public final class SpecDocument {
+    public let root: JSONValue
 
-    init(root: JSONValue) {
+    public init(root: JSONValue) {
         self.root = root
     }
 
-    func pointer(_ reference: String) -> JSONValue? {
+    public func pointer(_ reference: String) -> JSONValue? {
         guard reference.hasPrefix("#") else { return nil }
         var current = root
         for raw in reference.dropFirst().split(separator: "/") {
@@ -25,7 +25,7 @@ final class SpecDocument {
         return current
     }
 
-    func resolve(_ value: JSONValue) -> JSONValue {
+    public func resolve(_ value: JSONValue) -> JSONValue {
         var current = value
         var hops = 0
         while let reference = current["$ref"]?.string, hops < 32 {
@@ -36,7 +36,7 @@ final class SpecDocument {
         return current
     }
 
-    static func referenceName(_ value: JSONValue) -> String? {
+    public static func referenceName(_ value: JSONValue) -> String? {
         guard let reference = value["$ref"]?.string else { return nil }
         return reference.split(separator: "/").last.map(String.init)
     }

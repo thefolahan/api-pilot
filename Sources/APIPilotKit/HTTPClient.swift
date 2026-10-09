@@ -1,16 +1,16 @@
 import Foundation
 
-struct HTTPResult {
-    let status: Int
-    let headers: [(name: String, value: String)]
-    let body: Data
-    let duration: TimeInterval
-    let url: URL?
-    let date: Date
-    let json: JSONValue?
-    let prettyText: String?
+public struct HTTPResult {
+    public let status: Int
+    public let headers: [(name: String, value: String)]
+    public let body: Data
+    public let duration: TimeInterval
+    public let url: URL?
+    public let date: Date
+    public let json: JSONValue?
+    public let prettyText: String?
 
-    init(status: Int, headers: [(name: String, value: String)], body: Data, duration: TimeInterval, url: URL?, date: Date) {
+    public init(status: Int, headers: [(name: String, value: String)], body: Data, duration: TimeInterval, url: URL?, date: Date) {
         self.status = status
         self.headers = headers
         self.body = body
@@ -21,22 +21,22 @@ struct HTTPResult {
         prettyText = json?.serialized(pretty: true)
     }
 
-    func header(_ name: String) -> String? {
+    public func header(_ name: String) -> String? {
         headers.first { $0.name.caseInsensitiveCompare(name) == .orderedSame }?.value
     }
 
-    var contentType: String { header("Content-Type")?.lowercased() ?? "" }
-    var statusText: String { HTTPStatus.reason(status) }
-    var text: String { String(data: body, encoding: .utf8) ?? String(decoding: body, as: UTF8.self) }
-    var isImage: Bool { contentType.hasPrefix("image/") }
+    public var contentType: String { header("Content-Type")?.lowercased() ?? "" }
+    public var statusText: String { HTTPStatus.reason(status) }
+    public var text: String { String(data: body, encoding: .utf8) ?? String(decoding: body, as: UTF8.self) }
+    public var isImage: Bool { contentType.hasPrefix("image/") }
 }
 
-final class HTTPClient: NSObject, URLSessionTaskDelegate {
+public final class HTTPClient: NSObject, URLSessionTaskDelegate {
     private var session: URLSession!
     private var tokens: [String: (token: String, expiry: Date)] = [:]
-    var followRedirects = true
+    public var followRedirects = true
 
-    override init() {
+    public override init() {
         super.init()
         let configuration = URLSessionConfiguration.ephemeral
         configuration.timeoutIntervalForRequest = 60
@@ -45,7 +45,7 @@ final class HTTPClient: NSObject, URLSessionTaskDelegate {
         session = URLSession(configuration: configuration, delegate: self, delegateQueue: nil)
     }
 
-    func send(_ request: ResolvedRequest) async throws -> HTTPResult {
+    public func send(_ request: ResolvedRequest) async throws -> HTTPResult {
         var urlRequest = URLRequest(url: request.url)
         urlRequest.httpMethod = request.method
         for header in request.headers {
@@ -65,7 +65,7 @@ final class HTTPClient: NSObject, URLSessionTaskDelegate {
         return HTTPResult(status: http.statusCode, headers: headers, body: data, duration: duration, url: http.url, date: start)
     }
 
-    func accessToken(for auth: AuthConfig, variables: [String: String], forceRefresh: Bool = false) async throws -> String {
+    public func accessToken(for auth: AuthConfig, variables: [String: String], forceRefresh: Bool = false) async throws -> String {
         let tokenURL = Interpolator.apply(auth.tokenURL, variables: variables)
         let clientID = Interpolator.apply(auth.clientID, variables: variables)
         let clientSecret = Interpolator.apply(auth.clientSecret, variables: variables)
@@ -95,24 +95,24 @@ final class HTTPClient: NSObject, URLSessionTaskDelegate {
         return token
     }
 
-    func urlSession(_ session: URLSession, task: URLSessionTask, willPerformHTTPRedirection response: HTTPURLResponse,
+    public func urlSession(_ session: URLSession, task: URLSessionTask, willPerformHTTPRedirection response: HTTPURLResponse,
                     newRequest request: URLRequest) async -> URLRequest? {
         followRedirects ? request : nil
     }
 }
 
-enum OAuthError: Error, LocalizedError {
+public enum OAuthError: Error, LocalizedError {
     case message(String)
 
-    var errorDescription: String? {
+    public var errorDescription: String? {
         switch self {
         case .message(let text): return text
         }
     }
 }
 
-enum HTTPStatus {
-    static func reason(_ code: Int) -> String {
+public enum HTTPStatus {
+    public static func reason(_ code: Int) -> String {
         switch code {
         case 100: return "Continue"
         case 101: return "Switching Protocols"

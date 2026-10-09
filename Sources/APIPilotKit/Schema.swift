@@ -1,11 +1,11 @@
 import Foundation
 
-struct Schema {
-    let raw: JSONValue
-    let referenceName: String?
-    let document: SpecDocument
+public struct Schema {
+    public let raw: JSONValue
+    public let referenceName: String?
+    public let document: SpecDocument
 
-    init(_ value: JSONValue, document: SpecDocument) {
+    public init(_ value: JSONValue, document: SpecDocument) {
         self.document = document
         referenceName = SpecDocument.referenceName(value)
         raw = Schema.merge(document.resolve(value), document: document, depth: 0)
@@ -39,45 +39,45 @@ struct Schema {
         value.map { Schema($0, document: document) }
     }
 
-    var types: [String] {
+    public var types: [String] {
         if let single = raw["type"]?.string { return [single] }
         return (raw["type"]?.array ?? []).compactMap(\.string)
     }
 
-    var primaryType: String? {
+    public var primaryType: String? {
         if let type = types.first(where: { $0 != "null" }) { return type }
         if raw["properties"] != nil { return "object" }
         if raw["items"] != nil { return "array" }
         return nil
     }
 
-    var isNullable: Bool { raw["nullable"]?.bool == true || types.contains("null") }
-    var format: String? { raw["format"]?.string }
-    var title: String? { raw["title"]?.string }
-    var description: String? { raw["description"]?.string }
-    var pattern: String? { raw["pattern"]?.string }
-    var enumValues: [JSONValue] { raw["enum"]?.array ?? (raw["const"].map { [$0] } ?? []) }
-    var defaultValue: JSONValue? { raw["default"] }
-    var example: JSONValue? { raw["example"] ?? raw["examples"]?.array?.first }
-    var readOnly: Bool { raw["readOnly"]?.bool == true }
-    var writeOnly: Bool { raw["writeOnly"]?.bool == true }
-    var deprecated: Bool { raw["deprecated"]?.bool == true }
-    var required: Set<String> { Set((raw["required"]?.array ?? []).compactMap(\.string)) }
-    var items: Schema? { child(raw["items"]) }
-    var oneOf: [Schema] { (raw["oneOf"]?.array ?? raw["anyOf"]?.array ?? []).map { Schema($0, document: document) } }
+    public var isNullable: Bool { raw["nullable"]?.bool == true || types.contains("null") }
+    public var format: String? { raw["format"]?.string }
+    public var title: String? { raw["title"]?.string }
+    public var description: String? { raw["description"]?.string }
+    public var pattern: String? { raw["pattern"]?.string }
+    public var enumValues: [JSONValue] { raw["enum"]?.array ?? (raw["const"].map { [$0] } ?? []) }
+    public var defaultValue: JSONValue? { raw["default"] }
+    public var example: JSONValue? { raw["example"] ?? raw["examples"]?.array?.first }
+    public var readOnly: Bool { raw["readOnly"]?.bool == true }
+    public var writeOnly: Bool { raw["writeOnly"]?.bool == true }
+    public var deprecated: Bool { raw["deprecated"]?.bool == true }
+    public var required: Set<String> { Set((raw["required"]?.array ?? []).compactMap(\.string)) }
+    public var items: Schema? { child(raw["items"]) }
+    public var oneOf: [Schema] { (raw["oneOf"]?.array ?? raw["anyOf"]?.array ?? []).map { Schema($0, document: document) } }
 
-    var properties: [(name: String, schema: Schema)] {
+    public var properties: [(name: String, schema: Schema)] {
         (raw["properties"]?.members ?? []).map { ($0.key, Schema($0.value, document: document)) }
     }
 
-    var additionalProperties: Schema? {
+    public var additionalProperties: Schema? {
         guard let value = raw["additionalProperties"], value.members != nil else { return nil }
         return child(value)
     }
 
-    var forbidsAdditionalProperties: Bool { raw["additionalProperties"]?.bool == false }
+    public var forbidsAdditionalProperties: Bool { raw["additionalProperties"]?.bool == false }
 
-    var constraints: [String] {
+    public var constraints: [String] {
         var notes: [String] = []
         let pairs: [(String, String)] = [
             ("minimum", "min"), ("maximum", "max"), ("minLength", "min length"), ("maxLength", "max length"),
@@ -91,7 +91,7 @@ struct Schema {
         return notes
     }
 
-    var typeLabel: String {
+    public var typeLabel: String {
         if let referenceName, primaryType == "object" || primaryType == nil, raw["properties"] != nil || raw["allOf"] != nil {
             return referenceName
         }

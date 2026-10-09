@@ -1,8 +1,8 @@
 import Foundation
 import Yams
 
-enum SpecLoader {
-    static func parse(_ data: Data) throws -> JSONValue {
+public enum SpecLoader {
+    public static func parse(_ data: Data) throws -> JSONValue {
         let text = String(decoding: data, as: UTF8.self)
         let trimmed = text.drop { $0.isWhitespace || $0 == "\u{FEFF}" }
         if trimmed.first == "{" || trimmed.first == "[" {
@@ -34,10 +34,10 @@ enum SpecLoader {
     }
 }
 
-enum SpecError: Error, LocalizedError {
+public enum SpecError: Error, LocalizedError {
     case invalid(String)
 
-    var errorDescription: String? {
+    public var errorDescription: String? {
         switch self {
         case .invalid(let message): return message
         }

@@ -6,25 +6,25 @@ extension KeyedDecodingContainer {
     }
 }
 
-struct KeyValue: Codable, Identifiable, Equatable, Hashable {
-    var id = UUID()
-    var enabled = true
-    var key = ""
-    var value = ""
-    var note: String?
+public struct KeyValue: Codable, Identifiable, Equatable, Hashable {
+    public var id = UUID()
+    public var enabled = true
+    public var key = ""
+    public var value = ""
+    public var note: String?
 
     enum CodingKeys: String, CodingKey {
         case enabled, key, value, note
     }
 
-    init(key: String = "", value: String = "", enabled: Bool = true, note: String? = nil) {
+    public init(key: String = "", value: String = "", enabled: Bool = true, note: String? = nil) {
         self.key = key
         self.value = value
         self.enabled = enabled
         self.note = note
     }
 
-    init(from decoder: Decoder) throws {
+    public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         enabled = container.value(.enabled, or: true)
         key = container.value(.key, or: "")
@@ -32,15 +32,15 @@ struct KeyValue: Codable, Identifiable, Equatable, Hashable {
         note = container.value(.note, or: nil)
     }
 
-    var isBlank: Bool { key.isEmpty && value.isEmpty }
+    public var isBlank: Bool { key.isEmpty && value.isEmpty }
 }
 
-enum BodyMode: String, Codable, CaseIterable, Identifiable {
+public enum BodyMode: String, Codable, CaseIterable, Identifiable {
     case none, json, xml, text, form, multipart
 
-    var id: String { rawValue }
+    public var id: String { rawValue }
 
-    var label: String {
+    public var label: String {
         switch self {
         case .none: return "None"
         case .json: return "JSON"
@@ -51,7 +51,7 @@ enum BodyMode: String, Codable, CaseIterable, Identifiable {
         }
     }
 
-    var contentType: String? {
+    public var contentType: String? {
         switch self {
         case .none: return nil
         case .json: return "application/json"
@@ -63,13 +63,13 @@ enum BodyMode: String, Codable, CaseIterable, Identifiable {
     }
 }
 
-struct AuthConfig: Codable, Equatable {
-    enum Mode: String, Codable, CaseIterable, Identifiable {
+public struct AuthConfig: Codable, Equatable {
+    public enum Mode: String, Codable, CaseIterable, Identifiable {
         case none, bearer, basic, apiKey, oauth2
 
-        var id: String { rawValue }
+        public var id: String { rawValue }
 
-        var label: String {
+        public var label: String {
             switch self {
             case .none: return "No auth"
             case .bearer: return "Bearer token"
@@ -80,25 +80,25 @@ struct AuthConfig: Codable, Equatable {
         }
     }
 
-    var mode: Mode = .none
-    var token = ""
-    var username = ""
-    var password = ""
-    var keyName = "X-API-Key"
-    var keyValue = ""
-    var keyLocation = "header"
-    var tokenURL = ""
-    var clientID = ""
-    var clientSecret = ""
-    var scope = ""
+    public var mode: Mode = .none
+    public var token = ""
+    public var username = ""
+    public var password = ""
+    public var keyName = "X-API-Key"
+    public var keyValue = ""
+    public var keyLocation = "header"
+    public var tokenURL = ""
+    public var clientID = ""
+    public var clientSecret = ""
+    public var scope = ""
 
     enum CodingKeys: String, CodingKey {
         case mode, token, username, password, keyName, keyValue, keyLocation, tokenURL, clientID, clientSecret, scope
     }
 
-    init() {}
+    public init() {}
 
-    init(from decoder: Decoder) throws {
+    public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         mode = container.value(.mode, or: .none)
         token = container.value(.token, or: "")
@@ -114,13 +114,13 @@ struct AuthConfig: Codable, Equatable {
     }
 }
 
-struct Assertion: Codable, Identifiable, Equatable {
-    enum Source: String, Codable, CaseIterable, Identifiable {
+public struct Assertion: Codable, Identifiable, Equatable {
+    public enum Source: String, Codable, CaseIterable, Identifiable {
         case status, jsonPath, header, responseTime, body, schema
 
-        var id: String { rawValue }
+        public var id: String { rawValue }
 
-        var label: String {
+        public var label: String {
             switch self {
             case .status: return "Status code"
             case .jsonPath: return "JSON value"
@@ -131,16 +131,16 @@ struct Assertion: Codable, Identifiable, Equatable {
             }
         }
 
-        var needsTarget: Bool { self == .jsonPath || self == .header }
-        var needsComparison: Bool { self != .schema }
+        public var needsTarget: Bool { self == .jsonPath || self == .header }
+        public var needsComparison: Bool { self != .schema }
     }
 
-    enum Comparison: String, Codable, CaseIterable, Identifiable {
+    public enum Comparison: String, Codable, CaseIterable, Identifiable {
         case equals, notEquals, contains, lessThan, greaterThan, exists, matches
 
-        var id: String { rawValue }
+        public var id: String { rawValue }
 
-        var label: String {
+        public var label: String {
             switch self {
             case .equals: return "equals"
             case .notEquals: return "does not equal"
@@ -153,25 +153,25 @@ struct Assertion: Codable, Identifiable, Equatable {
         }
     }
 
-    var id = UUID()
-    var enabled = true
-    var source: Source = .status
-    var target = ""
-    var comparison: Comparison = .equals
-    var expected = ""
+    public var id = UUID()
+    public var enabled = true
+    public var source: Source = .status
+    public var target = ""
+    public var comparison: Comparison = .equals
+    public var expected = ""
 
     enum CodingKeys: String, CodingKey {
         case enabled, source, target, comparison, expected
     }
 
-    init(source: Source = .status, target: String = "", comparison: Comparison = .equals, expected: String = "") {
+    public init(source: Source = .status, target: String = "", comparison: Comparison = .equals, expected: String = "") {
         self.source = source
         self.target = target
         self.comparison = comparison
         self.expected = expected
     }
 
-    init(from decoder: Decoder) throws {
+    public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         enabled = container.value(.enabled, or: true)
         source = container.value(.source, or: .status)
@@ -180,7 +180,7 @@ struct Assertion: Codable, Identifiable, Equatable {
         expected = container.value(.expected, or: "")
     }
 
-    var summary: String {
+    public var summary: String {
         switch source {
         case .schema: return "Response matches the documented schema"
         case .status, .responseTime, .body:
@@ -191,31 +191,31 @@ struct Assertion: Codable, Identifiable, Equatable {
     }
 }
 
-struct Capture: Codable, Identifiable, Equatable {
-    enum Source: String, Codable, CaseIterable, Identifiable {
+public struct Capture: Codable, Identifiable, Equatable {
+    public enum Source: String, Codable, CaseIterable, Identifiable {
         case jsonPath, header
 
-        var id: String { rawValue }
-        var label: String { self == .jsonPath ? "JSON value" : "Header" }
+        public var id: String { rawValue }
+        public var label: String { self == .jsonPath ? "JSON value" : "Header" }
     }
 
-    var id = UUID()
-    var enabled = true
-    var variable = ""
-    var source: Source = .jsonPath
-    var path = ""
+    public var id = UUID()
+    public var enabled = true
+    public var variable = ""
+    public var source: Source = .jsonPath
+    public var path = ""
 
     enum CodingKeys: String, CodingKey {
         case enabled, variable, source, path
     }
 
-    init(variable: String = "", source: Source = .jsonPath, path: String = "") {
+    public init(variable: String = "", source: Source = .jsonPath, path: String = "") {
         self.variable = variable
         self.source = source
         self.path = path
     }
 
-    init(from decoder: Decoder) throws {
+    public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         enabled = container.value(.enabled, or: true)
         variable = container.value(.variable, or: "")
@@ -224,28 +224,28 @@ struct Capture: Codable, Identifiable, Equatable {
     }
 }
 
-struct RequestDraft: Codable, Equatable {
-    var name = ""
-    var operationID: String?
-    var method = "GET"
-    var url = ""
-    var pathParams: [KeyValue] = []
-    var query: [KeyValue] = []
-    var headers: [KeyValue] = []
-    var bodyMode: BodyMode = .none
-    var body = ""
-    var form: [KeyValue] = []
-    var auth = AuthConfig()
-    var assertions: [Assertion] = []
-    var captures: [Capture] = []
+public struct RequestDraft: Codable, Equatable {
+    public var name = ""
+    public var operationID: String?
+    public var method = "GET"
+    public var url = ""
+    public var pathParams: [KeyValue] = []
+    public var query: [KeyValue] = []
+    public var headers: [KeyValue] = []
+    public var bodyMode: BodyMode = .none
+    public var body = ""
+    public var form: [KeyValue] = []
+    public var auth = AuthConfig()
+    public var assertions: [Assertion] = []
+    public var captures: [Capture] = []
 
     enum CodingKeys: String, CodingKey {
         case name, operationID, method, url, pathParams, query, headers, bodyMode, body, form, auth, assertions, captures
     }
 
-    init() {}
+    public init() {}
 
-    init(from decoder: Decoder) throws {
+    public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         name = container.value(.name, or: "")
         operationID = container.value(.operationID, or: nil)
@@ -262,7 +262,7 @@ struct RequestDraft: Codable, Equatable {
         captures = container.value(.captures, or: [])
     }
 
-    var cleaned: RequestDraft {
+    public var cleaned: RequestDraft {
         var copy = self
         copy.pathParams.removeAll(where: \.isBlank)
         copy.query.removeAll(where: \.isBlank)
@@ -272,7 +272,12 @@ struct RequestDraft: Codable, Equatable {
     }
 }
 
-struct SavedRequest: Identifiable, Equatable {
-    let id: String
-    var draft: RequestDraft
+public struct SavedRequest: Identifiable, Equatable {
+    public let id: String
+    public var draft: RequestDraft
+
+    public init(id: String, draft: RequestDraft) {
+        self.id = id
+        self.draft = draft
+    }
 }

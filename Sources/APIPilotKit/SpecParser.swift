@@ -1,9 +1,9 @@
 import Foundation
 
-enum SpecParser {
-    static let methods = ["get", "put", "post", "delete", "options", "head", "patch", "trace"]
+public enum SpecParser {
+    public static let methods = ["get", "put", "post", "delete", "options", "head", "patch", "trace"]
 
-    static func parse(data: Data, sourceURL: URL? = nil) throws -> APISpec {
+    public static func parse(data: Data, sourceURL: URL? = nil) throws -> APISpec {
         let root = try SpecLoader.parse(data)
         guard root.members != nil else { throw SpecError.invalid("This file is not an OpenAPI document.") }
         if let version = root["swagger"]?.plainText {
@@ -292,7 +292,7 @@ enum SpecParser {
         }
     }
 
-    static func absolute(_ url: String, relativeTo source: URL?) -> String {
+    public static func absolute(_ url: String, relativeTo source: URL?) -> String {
         if url.contains("://") { return url.hasSuffix("/") ? String(url.dropLast()) : url }
         guard let source, source.scheme?.hasPrefix("http") == true,
               let resolved = URL(string: url, relativeTo: source)?.absoluteString else { return url }

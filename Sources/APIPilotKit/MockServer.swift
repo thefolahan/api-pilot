@@ -1,31 +1,31 @@
 import Foundation
 import Network
 
-struct MockLogEntry: Identifiable {
-    let id = UUID()
-    let date = Date()
-    let method: String
-    let path: String
-    let status: Int
-    let operation: String?
-    let note: String?
+public struct MockLogEntry: Identifiable {
+    public let id = UUID()
+    public let date = Date()
+    public let method: String
+    public let path: String
+    public let status: Int
+    public let operation: String?
+    public let note: String?
 }
 
-final class MockServer {
+public final class MockServer {
     private var listener: NWListener?
     private let queue = DispatchQueue(label: "com.thefolahan.apipilot.mock")
     private var spec: APISpec
     private var routes: [(operation: APIOperation, regex: NSRegularExpression)] = []
     private var basePaths: [String] = []
-    var onLog: ((MockLogEntry) -> Void)?
-    var onStateChange: ((Bool, String?) -> Void)?
+    public var onLog: ((MockLogEntry) -> Void)?
+    public var onStateChange: ((Bool, String?) -> Void)?
 
-    init(spec: APISpec) {
+    public init(spec: APISpec) {
         self.spec = spec
         rebuild()
     }
 
-    func update(spec: APISpec) {
+    public func update(spec: APISpec) {
         queue.async {
             self.spec = spec
             self.rebuild()
@@ -43,7 +43,7 @@ final class MockServer {
         basePaths = spec.servers.compactMap { URL(string: $0.url)?.path }.filter { !$0.isEmpty && $0 != "/" }
     }
 
-    func start(port: UInt16) throws {
+    public func start(port: UInt16) throws {
         let parameters = NWParameters.tcp
         parameters.allowLocalEndpointReuse = true
         parameters.requiredLocalEndpoint = .hostPort(host: .ipv4(.loopback), port: NWEndpoint.Port(rawValue: port)!)
@@ -63,7 +63,7 @@ final class MockServer {
         self.listener = listener
     }
 
-    func stop() {
+    public func stop() {
         listener?.cancel()
         listener = nil
     }

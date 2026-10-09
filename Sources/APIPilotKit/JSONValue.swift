@@ -1,11 +1,16 @@
 import Foundation
 
-struct JSONMember: Equatable {
-    var key: String
-    var value: JSONValue
+public struct JSONMember: Equatable {
+    public var key: String
+    public var value: JSONValue
+
+    public init(key: String, value: JSONValue) {
+        self.key = key
+        self.value = value
+    }
 }
 
-indirect enum JSONValue: Equatable {
+public indirect enum JSONValue: Equatable {
     case null
     case bool(Bool)
     case number(String)
@@ -13,49 +18,49 @@ indirect enum JSONValue: Equatable {
     case array([JSONValue])
     case object([JSONMember])
 
-    subscript(key: String) -> JSONValue? {
+    public subscript(key: String) -> JSONValue? {
         guard case .object(let members) = self else { return nil }
         return members.first { $0.key == key }?.value
     }
 
-    subscript(index: Int) -> JSONValue? {
+    public subscript(index: Int) -> JSONValue? {
         guard case .array(let items) = self, items.indices.contains(index) else { return nil }
         return items[index]
     }
 
-    var string: String? {
+    public var string: String? {
         if case .string(let value) = self { return value }
         return nil
     }
 
-    var bool: Bool? {
+    public var bool: Bool? {
         if case .bool(let value) = self { return value }
         return nil
     }
 
-    var double: Double? {
+    public var double: Double? {
         if case .number(let value) = self { return Double(value) }
         return nil
     }
 
-    var array: [JSONValue]? {
+    public var array: [JSONValue]? {
         if case .array(let items) = self { return items }
         return nil
     }
 
-    var members: [JSONMember]? {
+    public var members: [JSONMember]? {
         if case .object(let members) = self { return members }
         return nil
     }
 
-    var keys: [String] { members?.map(\.key) ?? [] }
+    public var keys: [String] { members?.map(\.key) ?? [] }
 
-    var isNull: Bool {
+    public var isNull: Bool {
         if case .null = self { return true }
         return false
     }
 
-    var typeName: String {
+    public var typeName: String {
         switch self {
         case .null: return "null"
         case .bool: return "boolean"
@@ -66,7 +71,7 @@ indirect enum JSONValue: Equatable {
         }
     }
 
-    var plainText: String {
+    public var plainText: String {
         switch self {
         case .string(let value): return value
         case .number(let raw): return raw
@@ -76,7 +81,7 @@ indirect enum JSONValue: Equatable {
         }
     }
 
-    init(_ any: Any) {
+    public init(_ any: Any) {
         switch any {
         case let value as String: self = .string(value)
         case let value as Bool: self = .bool(value)
@@ -89,12 +94,12 @@ indirect enum JSONValue: Equatable {
         }
     }
 
-    static func format(_ number: Double) -> String {
+    public static func format(_ number: Double) -> String {
         if number.rounded() == number, abs(number) < 1e15 { return String(Int64(number)) }
         return String(number)
     }
 
-    func setting(_ key: String, to value: JSONValue) -> JSONValue {
+    public func setting(_ key: String, to value: JSONValue) -> JSONValue {
         guard case .object(var members) = self else { return self }
         if let index = members.firstIndex(where: { $0.key == key }) {
             members[index].value = value
@@ -106,7 +111,7 @@ indirect enum JSONValue: Equatable {
 }
 
 extension JSONValue {
-    func serialized(pretty: Bool, indent: String = "  ") -> String {
+    public func serialized(pretty: Bool, indent: String = "  ") -> String {
         var out = ""
         write(into: &out, pretty: pretty, indent: indent, level: 0)
         return out
@@ -142,7 +147,7 @@ extension JSONValue {
         }
     }
 
-    static func quote(_ text: String) -> String {
+    public static func quote(_ text: String) -> String {
         var out = "\""
         for scalar in text.unicodeScalars {
             switch scalar {
@@ -165,22 +170,22 @@ extension JSONValue {
     }
 }
 
-struct JSONParseError: Error, LocalizedError {
-    let message: String
-    let offset: Int
-    var errorDescription: String? { "\(message) at byte \(offset)" }
+public struct JSONParseError: Error, LocalizedError {
+    public let message: String
+    public let offset: Int
+    public var errorDescription: String? { "\(message) at byte \(offset)" }
 }
 
-struct JSONParser {
+public struct JSONParser {
     private let bytes: [UInt8]
     private var index = 0
     private var depth = 0
 
-    static func parse(_ text: String) throws -> JSONValue {
+    public static func parse(_ text: String) throws -> JSONValue {
         try parse(Data(text.utf8))
     }
 
-    static func parse(_ data: Data) throws -> JSONValue {
+    public static func parse(_ data: Data) throws -> JSONValue {
         var parser = JSONParser(bytes: [UInt8](data))
         if parser.bytes.starts(with: [0xEF, 0xBB, 0xBF]) { parser.index = 3 }
         parser.skipWhitespace()

@@ -1,11 +1,11 @@
 import Foundation
 
-enum CodeLanguage: String, CaseIterable, Identifiable {
+public enum CodeLanguage: String, CaseIterable, Identifiable {
     case curl, httpie, fetch, python, swift, go
 
-    var id: String { rawValue }
+    public var id: String { rawValue }
 
-    var label: String {
+    public var label: String {
         switch self {
         case .curl: return "cURL"
         case .httpie: return "HTTPie"
@@ -17,8 +17,8 @@ enum CodeLanguage: String, CaseIterable, Identifiable {
     }
 }
 
-enum CodeGenerator {
-    static func code(for request: ResolvedRequest, language: CodeLanguage) -> String {
+public enum CodeGenerator {
+    public static func code(for request: ResolvedRequest, language: CodeLanguage) -> String {
         let headers = request.headers.filter { $0.name != "User-Agent" || $0.value != RequestBuilder.userAgent }
         let body = request.bodyText
         let url = request.url.absoluteString

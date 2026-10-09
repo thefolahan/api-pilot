@@ -1,4 +1,5 @@
 import SwiftUI
+import APIPilotKit
 
 struct RunnerView: View {
     @Environment(WorkspaceStore.self) private var store

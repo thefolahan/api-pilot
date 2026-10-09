@@ -1,7 +1,7 @@
 import Foundation
 
-enum DocsExporter {
-    static func html(for spec: APISpec, examples: [String: HistoryEntry] = [:]) -> String {
+public enum DocsExporter {
+    public static func html(for spec: APISpec, examples: [String: HistoryEntry] = [:]) -> String {
         var body = ""
         body += "<header><h1>\(escape(spec.title))</h1><p class=\"meta\"><span>\(escape(spec.version))</span><span>\(escape(spec.format))</span></p>"
         if let description = spec.description { body += paragraphs(description) }
@@ -121,7 +121,7 @@ enum DocsExporter {
             .map { "<p>\(escape($0))</p>" }.joined()
     }
 
-    static func escape(_ text: String) -> String {
+    public static func escape(_ text: String) -> String {
         text.replacingOccurrences(of: "&", with: "&amp;")
             .replacingOccurrences(of: "<", with: "&lt;")
             .replacingOccurrences(of: ">", with: "&gt;")

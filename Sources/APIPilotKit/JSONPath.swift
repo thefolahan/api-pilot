@@ -1,13 +1,13 @@
 import Foundation
 
-enum JSONPath {
-    enum Step: Equatable {
+public enum JSONPath {
+    public enum Step: Equatable {
         case key(String)
         case index(Int)
         case all
     }
 
-    static func steps(_ path: String) -> [Step] {
+    public static func steps(_ path: String) -> [Step] {
         var text = path.trimmingCharacters(in: .whitespaces)
         if text.hasPrefix("$") { text.removeFirst() }
         var steps: [Step] = []
@@ -44,7 +44,7 @@ enum JSONPath {
         return steps
     }
 
-    static func evaluate(_ path: String, in root: JSONValue) -> JSONValue? {
+    public static func evaluate(_ path: String, in root: JSONValue) -> JSONValue? {
         var nodes: [JSONValue] = [root]
         var fannedOut = false
         for step in steps(path) {

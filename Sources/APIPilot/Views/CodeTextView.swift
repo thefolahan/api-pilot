@@ -1,5 +1,6 @@
 import AppKit
 import SwiftUI
+import APIPilotKit
 
 enum SyntaxHighlighter {
     static let font = NSFont.monospacedSystemFont(ofSize: 12.5, weight: .regular)

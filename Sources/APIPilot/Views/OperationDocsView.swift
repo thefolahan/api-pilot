@@ -1,4 +1,5 @@
 import SwiftUI
+import APIPilotKit
 
 struct OperationDocsView: View {
     let operation: APIOperation

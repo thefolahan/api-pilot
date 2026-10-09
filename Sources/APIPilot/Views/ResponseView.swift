@@ -1,5 +1,6 @@
 import SwiftUI
 import UniformTypeIdentifiers
+import APIPilotKit
 
 enum ResponseTab: String, CaseIterable, Identifiable {
     case body, headers, tests, contract, request

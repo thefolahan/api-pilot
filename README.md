@@ -86,6 +86,32 @@ scripts/build-app.sh --dmg        # also build build/APIPilot.dmg
 
 The build is signed ad hoc. Set `SIGN_IDENTITY` to sign with your own certificate.
 
+## Use as a library
+
+Everything the app does with a spec lives in `APIPilotKit`, a Swift library you can add to your own package or Xcode project:
+
+```swift
+.package(url: "https://github.com/thefolahan/api-pilot.git", from: "1.1.0")
+```
+
+```swift
+import APIPilotKit
+
+let spec = try SpecParser.parse(data: Data(contentsOf: specURL))
+let operation = spec.operation(id: "GET /pets/{id}")!
+
+// Build a request from the spec and send it
+let draft = DraftFactory.make(from: operation, spec: spec)
+let request = try RequestBuilder.build(draft, variables: ["baseUrl": spec.servers[0].url])
+let result = try await HTTPClient().send(request)
+
+// Check the response against the documented schema
+let check = AssertionEngine.schemaIssues(result: result, operation: operation, spec: spec)
+check.issues.forEach { print($0.path, $0.message) }
+```
+
+`CodeGenerator` turns a request into cURL, HTTPie, JavaScript, Python, Swift or Go, `MockServer` serves a spec on a local port, and `DocsExporter` writes the HTML reference.
+
 ## Not yet supported
 
 References to other files (`$ref: ./schemas/pet.yaml`), OAuth 2.0 flows other than client credentials, WebSocket and GraphQL requests, and importing Postman collections.
